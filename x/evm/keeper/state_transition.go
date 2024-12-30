@@ -5,14 +5,16 @@ package keeper
 import (
 	"math/big"
 
-	tmtypes "github.com/tendermint/tendermint/types"
+	"golang.org/x/exp/slices"
+
+	tmtypes "github.com/cometbft/cometbft/types"
 
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	evmostypes "github.com/evmos/evmos/v13/types"
-	"github.com/evmos/evmos/v13/x/evm/statedb"
-	"github.com/evmos/evmos/v13/x/evm/types"
+	evmostypes "github.com/evmos/evmos/v14/types"
+	"github.com/evmos/evmos/v14/x/evm/statedb"
+	"github.com/evmos/evmos/v14/x/evm/types"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core"
@@ -326,6 +328,21 @@ func (k *Keeper) ApplyMessageWithConfig(ctx sdk.Context,
 		copy(activePrecompiles[:len(vm.PrecompiledAddressesBerlin)], vm.PrecompiledAddressesBerlin)
 		copy(activePrecompiles[len(vm.PrecompiledAddressesBerlin):], customPrecompiles)
 
+		// Check if the transaction is sent to an inactive precompile
+		//
+		// NOTE: This has to be checked here instead of in the actual evm.Call method
+		// because evm.WithPrecompiles only populates the EVM with the active precompiles,
+		// so there's no telling if the To address is an inactive precompile further down the call stack.
+		toAddr := msg.To()
+		if toAddr != nil &&
+			slices.Contains(types.AvailableEVMExtensions, toAddr.String()) &&
+			!slices.Contains(activePrecompiles, *toAddr) {
+			return nil, errorsmod.Wrap(types.ErrInactivePrecompile, "failed to call precompile")
+		}
+
+		// NOTE: this only adds active precompiles to the EVM.
+		// This means that evm.Precompile(addr) will return false for inactive precompiles
+		// even though this is actually a reserved address.
 		precompileMap := k.Precompiles(activePrecompiles...)
 		evm.WithPrecompiles(precompileMap, activePrecompiles)
 	}
@@ -413,6 +430,10 @@ func (k *Keeper) ApplyMessageWithConfig(ctx sdk.Context,
 	gasLimit := sdk.NewDec(int64(msg.Gas()))
 	minGasMultiplier := k.GetMinGasMultiplier(ctx)
 	minimumGasUsed := gasLimit.Mul(minGasMultiplier)
+
+	if !minimumGasUsed.TruncateInt().IsUint64() {
+		return nil, errorsmod.Wrapf(types.ErrGasOverflow, "minimumGasUsed(%s) is not a uint64", minimumGasUsed.TruncateInt().String())
+	}
 
 	if msg.Gas() < leftoverGas {
 		return nil, errorsmod.Wrapf(types.ErrGasOverflow, "message gas limit < leftover gas (%d < %d)", msg.Gas(), leftoverGas)

@@ -9,14 +9,14 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/core/vm"
-	cmn "github.com/evmos/evmos/v13/precompiles/common"
+	cmn "github.com/evmos/evmos/v14/precompiles/common"
 )
 
 const (
 	// EventTypeIBCTransfer defines the event type for the ICS20 Transfer transaction.
 	EventTypeIBCTransfer = "IBCTransfer"
 	// EventTypeIBCTransferAuthorization defines the event type for the ICS20 TransferAuthorization transaction.
-	EventTypeIBCTransferAuthorization = "IBCTransferAuthorization"
+	EventTypeIBCTransferAuthorization = "IBCTransferAuthorization" //#nosec G101 -- no hardcoded credentials here
 	// EventTypeRevokeIBCTransferAuthorization defines the event type for the ICS20 Authorization Revocation transaction.
 	EventTypeRevokeIBCTransferAuthorization = "RevokeIBCTransferAuthorization"
 )

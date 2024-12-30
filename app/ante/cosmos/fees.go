@@ -12,7 +12,7 @@ import (
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	authante "github.com/cosmos/cosmos-sdk/x/auth/ante"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
-	anteutils "github.com/evmos/evmos/v13/app/ante/utils"
+	anteutils "github.com/evmos/evmos/v14/app/ante/utils"
 )
 
 // DeductFeeDecorator deducts fees from the first signer of the tx.
@@ -129,7 +129,7 @@ func (dfd DeductFeeDecorator) deductFee(ctx sdk.Context, sdkTx sdk.Tx, fees sdk.
 
 	// deduct the fees
 	if err := deductFeesFromBalanceOrUnclaimedStakingRewards(ctx, dfd, deductFeesFromAcc, fees); err != nil {
-		return fmt.Errorf("insufficient funds and failed to claim sufficient staking rewards to pay for fees: %w", err)
+		return fmt.Errorf("%q has insufficient funds and failed to claim sufficient staking rewards to pay for fees: %w", deductFeesFrom.String(), err)
 	}
 
 	events := sdk.Events{

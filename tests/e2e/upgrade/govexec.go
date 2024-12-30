@@ -51,7 +51,7 @@ func (m *Manager) CreateSubmitProposalExec(targetVersion, chainID string, upgrad
 		proposalType = "submit-proposal"
 	}
 	cmd := []string{
-		"nxqd",
+		"evmosd",
 		"tx",
 		"gov",
 		proposalType,
@@ -64,7 +64,6 @@ func (m *Manager) CreateSubmitProposalExec(targetVersion, chainID string, upgrad
 		upgradeInfo,
 		fmt.Sprintf("--chain-id=%s", chainID),
 		"--from=mykey",
-		"-b=block",
 		"--yes",
 		"--keyring-backend=test",
 		"--log_format=json",
@@ -78,7 +77,7 @@ func (m *Manager) CreateSubmitProposalExec(targetVersion, chainID string, upgrad
 // CreateDepositProposalExec creates a gov tx to deposit for the proposal with the given id
 func (m *Manager) CreateDepositProposalExec(chainID string, id int) (string, error) {
 	cmd := []string{
-		"nxqd",
+		"evmosd",
 		"tx",
 		"gov",
 		"deposit",
@@ -86,7 +85,6 @@ func (m *Manager) CreateDepositProposalExec(chainID string, id int) (string, err
 		"10000000aevmos",
 		"--from=mykey",
 		fmt.Sprintf("--chain-id=%s", chainID),
-		"-b=block",
 		"--yes",
 		"--keyring-backend=test",
 		"--log_format=json",
@@ -100,7 +98,7 @@ func (m *Manager) CreateDepositProposalExec(chainID string, id int) (string, err
 // CreateVoteProposalExec creates gov tx to vote 'yes' on the proposal with the given id
 func (m *Manager) CreateVoteProposalExec(chainID string, id int, flags ...string) (string, error) {
 	cmd := []string{
-		"nxqd",
+		"evmosd",
 		"tx",
 		"gov",
 		"vote",
@@ -108,7 +106,6 @@ func (m *Manager) CreateVoteProposalExec(chainID string, id int, flags ...string
 		"yes",
 		"--from=mykey",
 		fmt.Sprintf("--chain-id=%s", chainID),
-		"-b=block",
 		"--yes",
 		"--keyring-backend=test",
 		"--log_format=json",

@@ -7,8 +7,8 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
-	evmkeeper "github.com/evmos/evmos/v13/x/evm/keeper"
-	evmtypes "github.com/evmos/evmos/v13/x/evm/types"
+	evmkeeper "github.com/evmos/evmos/v14/x/evm/keeper"
+	evmtypes "github.com/evmos/evmos/v14/x/evm/types"
 )
 
 // CreateUpgradeHandler creates an SDK upgrade handler for v13
@@ -31,6 +31,6 @@ func CreateUpgradeHandler(
 
 func setPrecompilesParams(ctx sdk.Context, ek evmkeeper.Keeper) error {
 	params := ek.GetParams(ctx)
-	params.ActivePrecompiles = evmtypes.DefaultActivePrecompiles
+	params.ActivePrecompiles = evmtypes.AvailableEVMExtensions
 	return ek.SetParams(ctx, params)
 }

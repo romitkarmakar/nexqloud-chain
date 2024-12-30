@@ -22,10 +22,10 @@ WORKDIR /
 RUN apt-get update
 
 # Copy over binaries from the build-env
-COPY --from=build-env /go/src/github.com/evmos/evmos/build/nxqd /
+COPY --from=build-env /go/src/github.com/evmos/evmos/build/evmosd /
 COPY --from=build-env /go/src/github.com/evmos/evmos/scripts/start-docker.sh /
 
 EXPOSE 26656 26657 1317 9090 8545 8546
 
-# Run nxqd by default, omit entrypoint to ease using container with nxqd
+# Run evmosd by default, omit entrypoint to ease using container with evmosd
 ENTRYPOINT ["/bin/bash", "-c"]

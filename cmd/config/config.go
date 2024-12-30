@@ -6,12 +6,12 @@ package config
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/evmos/evmos/v13/types"
+	"github.com/evmos/evmos/v14/types"
 )
 
 const (
 	// Bech32Prefix defines the Bech32 prefix used for EthAccounts
-	Bech32Prefix = "nxq"
+	Bech32Prefix = "evmos"
 
 	// Bech32PrefixAccAddr defines the Bech32 prefix of an account's address
 	Bech32PrefixAccAddr = Bech32Prefix
@@ -29,9 +29,9 @@ const (
 
 const (
 	// DisplayDenom defines the denomination displayed to users in client applications.
-	DisplayDenom = "nxq"
+	DisplayDenom = "evmos"
 	// BaseDenom defines to the default denomination used in Evmos (staking, EVM, governance, etc.)
-	BaseDenom = "unxq"
+	BaseDenom = "aevmos"
 )
 
 // SetBech32Prefixes sets the global prefixes to be used when serializing addresses and public keys to Bech32 strings.

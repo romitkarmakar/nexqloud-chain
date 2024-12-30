@@ -10,12 +10,12 @@ import (
 	"strings"
 
 	authclient "github.com/cosmos/cosmos-sdk/x/auth/client"
-	"github.com/evmos/evmos/v13/ethereum/eip712"
-	evmos "github.com/evmos/evmos/v13/types"
+	"github.com/evmos/evmos/v14/ethereum/eip712"
+	evmos "github.com/evmos/evmos/v14/types"
 	"github.com/pkg/errors"
 
+	"github.com/cometbft/cometbft/libs/bytes"
 	"github.com/spf13/cobra"
-	"github.com/tendermint/tendermint/libs/bytes"
 
 	"github.com/ethereum/go-ethereum/common"
 
@@ -54,7 +54,7 @@ func PubkeyCmd() *cobra.Command {
 		Short: "Decode a pubkey from proto JSON",
 		Long:  "Decode a pubkey from proto JSON and display it's address",
 		Example: fmt.Sprintf(
-			`"$ %s debug pubkey '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AurroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJ"}'`, //nolint:gitleaks
+			`"$ %s debug pubkey '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"AurroA7jvfPd1AadmmOvWM2rJSwipXfRf8yD6pLbA2DJ"}'`, //gitleaks:allow
 			version.AppName,
 		),
 		Args: cobra.ExactArgs(1),
@@ -140,7 +140,7 @@ func LegacyEIP712Cmd() *cobra.Command {
 	return &cobra.Command{
 		Use:     "legacy-eip712 [file]",
 		Short:   "Output types of legacy eip712 typed data according to the given transaction",
-		Example: fmt.Sprintf(`$ %s debug legacy-eip712 tx.json --chain-id confid_9000-1`, version.AppName),
+		Example: fmt.Sprintf(`$ %s debug legacy-eip712 tx.json --chain-id evmosd_9000-1`, version.AppName),
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			clientCtx, err := client.GetClientTxContext(cmd)

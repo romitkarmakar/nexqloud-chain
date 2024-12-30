@@ -6,7 +6,7 @@ package utils
 import (
 	"strings"
 
-	"github.com/evmos/evmos/v13/crypto/ethsecp256k1"
+	"github.com/evmos/evmos/v14/crypto/ethsecp256k1"
 
 	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
@@ -18,11 +18,11 @@ import (
 
 const (
 	// MainnetChainID defines the Evmos EIP155 chain ID for mainnet
-	MainnetChainID = "cl_3451"
+	MainnetChainID = "evmos_9001"
 	// TestnetChainID defines the Evmos EIP155 chain ID for testnet
-	TestnetChainID = "cl_3450"
+	TestnetChainID = "evmos_9000"
 	// BaseDenom defines the Evmos mainnet denomination
-	BaseDenom = "unxq"
+	BaseDenom = "aevmos"
 )
 
 // IsMainnet returns true if the chain-id has the Evmos mainnet EIP155 chain prefix.
